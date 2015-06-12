@@ -50,14 +50,16 @@ namespace FitBase
                 int b = 0;
                 while (dr.Read())
                 {
-                    OleDbCommand trening = new OleDbCommand("select FitnessProgram from FitnessProgram where FitnessID=" + dr.GetInt32(6) + ";", conn);
+                    OleDbCommand trening = new OleDbCommand("select FitnessProgram,GroupName from FitnessProgram where FitnessID=" + dr.GetInt32(6) + ";", conn);
                     OleDbDataReader dr2 = trening.ExecuteReader();
                     dr2.Read();
 
                     
-                    String imeTreninga = dr2.GetString(0);
+                    String imeTreninga = dr2.GetString(0)+", Group: "+dr2.GetString(1);
                     DataGrid.Rows.Add(dr.GetString(1), dr.GetDateTime(2), dr.GetInt32(3), NoToYN(dr.GetInt32(4)), dr.GetInt32(5), imeTreninga, dr.GetString(7));
                     DataGrid.Rows[DataGrid.RowCount-1].Tag=dr.GetInt32(0);
+                    if (dr.GetDateTime(2) < DateTime.Today)
+                        DataGrid.Rows[DataGrid.RowCount - 1].DefaultCellStyle.BackColor = Color.Red;
                     dr2.Close();
                 }
                 dr.Close();
@@ -105,6 +107,27 @@ namespace FitBase
                 FitnessCombo.Items.Add(dr.GetString(1) + "; Grupa: " + dr.GetString(2));
                 FitnessIDs.Add(dr.GetInt32(0));
             }
+            DataGrid.Rows.Clear();
+
+            read = new OleDbCommand("SELECT * FROM Users where TrainerName='" + trainerName + "';", conn);
+            dr = read.ExecuteReader();
+            int b = 0;
+            while (dr.Read())
+            {
+                OleDbCommand trening = new OleDbCommand("select FitnessProgram,GroupName from FitnessProgram where FitnessID=" + dr.GetInt32(6) + ";", conn);
+                OleDbDataReader dr2 = trening.ExecuteReader();
+                dr2.Read();
+
+
+                String imeTreninga = dr2.GetString(0) + ", Group: " + dr2.GetString(1);
+                DataGrid.Rows.Add(dr.GetString(1), dr.GetDateTime(2), dr.GetInt32(3), NoToYN(dr.GetInt32(4)), dr.GetInt32(5), imeTreninga, dr.GetString(7));
+                DataGrid.Rows[DataGrid.RowCount - 1].Tag = dr.GetInt32(0);
+                if (dr.GetDateTime(2) < DateTime.Today)
+                    DataGrid.Rows[DataGrid.RowCount - 1].DefaultCellStyle.BackColor = Color.Red;
+                dr2.Close();
+            }
+            dr.Close();
+
         }
 
         private void txtSearch_Enter(object sender, EventArgs e)
@@ -228,14 +251,74 @@ namespace FitBase
                 OleDbDataReader dr = read.ExecuteReader();
                 while (dr.Read())
                 {
-                    OleDbCommand trening = new OleDbCommand("select FitnessProgram from FitnessProgram where FitnessID=" + dr.GetInt32(6) + ";", conn);
+                    OleDbCommand trening = new OleDbCommand("select FitnessProgram,GroupName from FitnessProgram where FitnessID=" + dr.GetInt32(6) + ";", conn);
                     OleDbDataReader dr2 = trening.ExecuteReader();
                     dr2.Read();
 
 
-                    String imeTreninga = dr2.GetString(0);
+                    String imeTreninga = dr2.GetString(0) + ", Group: " + dr2.GetString(1);
                     DataGrid.Rows.Add(dr.GetString(1), dr.GetDateTime(2), dr.GetInt32(3), NoToYN(dr.GetInt32(4)), dr.GetInt32(5), imeTreninga, dr.GetString(7));
                     DataGrid.Rows[DataGrid.RowCount - 1].Tag = dr.GetInt32(0);
+                    if (dr.GetDateTime(2) < DateTime.Today)
+                        DataGrid.Rows[DataGrid.RowCount - 1].DefaultCellStyle.BackColor = Color.Red;
+                    dr2.Close();
+                }
+                dr.Close();
+                OleDbCommand read2 = new OleDbCommand("select * from Trainer", conn);
+                OleDbDataReader drTrainer = read2.ExecuteReader();
+
+                while (drTrainer.Read())
+                {
+                    TrainerCombo.Items.Add(drTrainer.GetString(0));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to connect to data source");
+            }
+            foreach (DataGridViewRow row in DataGrid.Rows)
+            {
+                String a = row.Cells[0].Value.ToString().ToLower();
+                String[] niz = a.Split(' ');
+                foreach (String UName in niz)
+                {
+                    txtSearch.AutoCompleteCustomSource.Add(UName);
+                }
+                txtSearch.AutoCompleteCustomSource.Add(a);
+            }
+            searchCombo.SelectedIndex = searchCombo.Items.IndexOf("Name");
+            txtSearch.Text = "Search by " + searchCombo.Text;
+        }
+
+        public void reload()
+        {
+            DataGrid.Rows.Clear();
+            TrainerCombo.Items.Clear();
+            FitnessCombo.Items.Clear();
+
+            conn = new OleDbConnection();
+            // TODO: Modify the connection string and include any
+            // additional required properties for your database.
+            conn.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=BAZA.accdb; Persist Security Info=False;";
+            try
+            {
+                conn.Open();
+                // Insert code to process data.
+
+                OleDbCommand read = new OleDbCommand("SELECT * FROM Users;", conn);
+                OleDbDataReader dr = read.ExecuteReader();
+                while (dr.Read())
+                {
+                    OleDbCommand trening = new OleDbCommand("select FitnessProgram,GroupName from FitnessProgram where FitnessID=" + dr.GetInt32(6) + ";", conn);
+                    OleDbDataReader dr2 = trening.ExecuteReader();
+                    dr2.Read();
+
+
+                    String imeTreninga = dr2.GetString(0) + ", Group: " + dr2.GetString(1);
+                    DataGrid.Rows.Add(dr.GetString(1), dr.GetDateTime(2), dr.GetInt32(3), NoToYN(dr.GetInt32(4)), dr.GetInt32(5), imeTreninga, dr.GetString(7));
+                    DataGrid.Rows[DataGrid.RowCount - 1].Tag = dr.GetInt32(0);
+                    if (dr.GetDateTime(2) < DateTime.Today)
+                        DataGrid.Rows[DataGrid.RowCount - 1].DefaultCellStyle.BackColor = Color.Red;
                     dr2.Close();
                 }
                 dr.Close();
@@ -303,61 +386,172 @@ namespace FitBase
 
         private void editFitnessProgramToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int id = FitnessIDs[FitnessCombo.SelectedIndex];
-            NewFitnessProgramForm fp = new NewFitnessProgramForm(this, conn, id);
-            fp.Show();
+            try
+            {
+                int id = FitnessIDs[FitnessCombo.SelectedIndex];
+                NewFitnessProgramForm fp = new NewFitnessProgramForm(this, conn, id);
+                fp.Show();
+            }
+            catch
+            {
+                MessageBox.Show("Please select fitness program first.");
+            }
+            
         }
 
         private void clearAllRecordsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            var confirmResult = MessageBox.Show("Are you sure?",
+                                        "Confirm Delete",
+                                        MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                try
+                {
+                    OleDbCommand deleteUsers = new OleDbCommand("delete  from Users;", conn);
+                    deleteUsers.ExecuteNonQuery();
+                    OleDbConnection.ReleaseObjectPool();
+                    OleDbCommand deleteCorelation = new OleDbCommand("delete  from Trainer_Fitness;", conn);
+                    deleteCorelation.ExecuteNonQuery();
+                    OleDbConnection.ReleaseObjectPool();
+                    OleDbCommand deleteTrainer = new OleDbCommand("delete  from Trainer;", conn);
+                    deleteTrainer.ExecuteNonQuery();
+                    OleDbConnection.ReleaseObjectPool();
+                    OleDbCommand deleteProgram = new OleDbCommand("delete  from FitnessProgram;", conn);
+                    deleteProgram.ExecuteNonQuery();
+                    MessageBox.Show("Database has been cleared!");
+                    reload();
+                }
+                catch { MessageBox.Show("Error"); }
+                
+            }
         }
 
         private void deleteTrainerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            String name = TrainerCombo.Text;
-             var confirmResult = MessageBox.Show("Are you sure?",
-                                     "Confirm Delete",
-                                     MessageBoxButtons.YesNo);
-             if (confirmResult == DialogResult.Yes)
-             { 
-                  var confirmResult2 = MessageBox.Show("Delete all corelated users?",
-                                     "Confirm",
-                                     MessageBoxButtons.YesNo);
-                  if (confirmResult2 == DialogResult.Yes)
-                  {
-                      OleDbCommand deleteUsers = new OleDbCommand("delete  from Users where TrainerName='" + name + "';", conn);
-                      deleteUsers.ExecuteNonQuery();
-                      OleDbCommand deleteCorelation = new OleDbCommand("delete  from Trainer_Fitness where TrainerName='" + name + "';", conn);
-                      deleteCorelation.ExecuteNonQuery();
-                      OleDbCommand deleteTrainer = new OleDbCommand("delete  from Trainer where TrainerName='" + name + "';", conn);
-                      deleteTrainer.ExecuteNonQuery();
-                      MessageBox.Show("Trainer deleted");
-                  }
-                  else if (confirmResult2 == DialogResult.No)
-                  {
-                      Trainers t = new Trainers(this, conn, name);
-                      var a=t.ShowDialog();
-                      if (a == DialogResult.OK)
-                      {
-                          OleDbCommand editUsers = new OleDbCommand("update Users set TrainerName='"+currentTrainerName+"',FitnessID="+currentFitnessProgramID+" where TrainerName='" + name + "';", conn);
-                          editUsers.ExecuteNonQuery();
-                          OleDbCommand deleteCorelation = new OleDbCommand("delete  from Trainer_Fitness where TrainerName='" + name + "';", conn);
-                          deleteCorelation.ExecuteNonQuery();
-                          OleDbCommand deleteTrainer = new OleDbCommand("delete  from Trainer where TrainerName='" + name + "';", conn);
-                          deleteTrainer.ExecuteNonQuery();
-                          MessageBox.Show("Trainer deleted");
-                      }
-                      
-                      
-                  }
-             }
+            try
+            {
+                String name = TrainerCombo.Text;
+                var confirmResult = MessageBox.Show("Are you sure?",
+                                        "Confirm Delete",
+                                        MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    var confirmResult2 = MessageBox.Show("Delete all corelated users?",
+                                       "Confirm",
+                                       MessageBoxButtons.YesNo);
+                    if (confirmResult2 == DialogResult.Yes)
+                    {
+                        OleDbCommand deleteUsers = new OleDbCommand("delete  from Users where TrainerName='" + name + "';", conn);
+                        deleteUsers.ExecuteNonQuery();
+                        OleDbCommand deleteCorelation = new OleDbCommand("delete  from Trainer_Fitness where TrainerName='" + name + "';", conn);
+                        deleteCorelation.ExecuteNonQuery();
+                        OleDbCommand deleteTrainer = new OleDbCommand("delete  from Trainer where TrainerName='" + name + "';", conn);
+                        deleteTrainer.ExecuteNonQuery();
+                        MessageBox.Show("Trainer deleted");
+                    }
+                    else if (confirmResult2 == DialogResult.No)
+                    {
+                        Trainers t = new Trainers(this, conn, name);
+                        var a = t.ShowDialog();
+                        if (a == DialogResult.OK)
+                        {
+                            OleDbCommand editUsers = new OleDbCommand("update Users set TrainerName='" + currentTrainerName + "',FitnessID=" + currentFitnessProgramID + " where TrainerName='" + name + "';", conn);
+                            editUsers.ExecuteNonQuery();
+                            OleDbCommand deleteCorelation = new OleDbCommand("delete  from Trainer_Fitness where TrainerName='" + name + "';", conn);
+                            deleteCorelation.ExecuteNonQuery();
+                            OleDbCommand deleteTrainer = new OleDbCommand("delete  from Trainer where TrainerName='" + name + "';", conn);
+                            deleteTrainer.ExecuteNonQuery();
+                            MessageBox.Show("Trainer deleted");
+                        }
+
+
+                    }
+                }
             
 
+            }
+            catch
+            {
+                MessageBox.Show("Error...");
+            }
         }
 
         public String currentTrainerName{get;set;}
         public int currentFitnessProgramID{get;set;}
+
+        private void deleteFitnessProgramToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+               int id = FitnessIDs[FitnessCombo.SelectedIndex];
+                var confirmResult = MessageBox.Show("Are you sure?",
+                                        "Confirm Delete",
+                                        MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    var confirmResult2 = MessageBox.Show("Delete all corelated users?",
+                                       "Confirm",
+                                       MessageBoxButtons.YesNo);
+                    if (confirmResult2 == DialogResult.Yes)
+                    {
+                        OleDbCommand deleteUsers = new OleDbCommand("delete  from Users where FitnessID=" + id + ";", conn);
+                        deleteUsers.ExecuteNonQuery();
+                        OleDbCommand deleteCorelation = new OleDbCommand("delete  from Trainer_Fitness where FitnessID=" + id + ";", conn);
+                        deleteCorelation.ExecuteNonQuery();
+                        OleDbCommand deleteTrainer = new OleDbCommand("delete  from FitnessProgram where FitnessID=" + id + ";", conn);
+                        deleteTrainer.ExecuteNonQuery();
+                        MessageBox.Show("Fitness Program deleted");
+                    }
+                    else if (confirmResult2 == DialogResult.No)
+                    {
+                        Trainers t = new Trainers(this, conn, id);
+                        var a = t.ShowDialog();
+                        if (a == DialogResult.OK)
+                        {
+                            OleDbCommand editUsers = new OleDbCommand("update Users set TrainerName='" + currentTrainerName + "',FitnessID=" + currentFitnessProgramID + " where FitnessID=" + id + ";", conn);
+                            editUsers.ExecuteNonQuery();
+                            OleDbCommand deleteCorelation = new OleDbCommand("delete  from Trainer_Fitness where FitnessID=" + id + ";", conn);
+                            deleteCorelation.ExecuteNonQuery();
+                            OleDbCommand deleteTrainer = new OleDbCommand("delete  from FitnessProgram where FitnessID=" + id + ";", conn);
+                            deleteTrainer.ExecuteNonQuery();
+                            MessageBox.Show("Fitness Program deleted");
+                        }
+                    }
+                }
+
+
+            }
+            catch
+            {
+                MessageBox.Show("Error...");
+            }
+        }
+
+        private void FitnessCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            String trainerName = TrainerCombo.Text;
+            DataGrid.Rows.Clear();
+            int FitnessID = FitnessIDs[FitnessCombo.SelectedIndex];
+            OleDbCommand read = new OleDbCommand("SELECT * FROM Users where TrainerName='" + trainerName + "' and FitnessID=" + FitnessID + ";", conn);
+            OleDbDataReader dr = read.ExecuteReader();
+            int b = 0;
+            while (dr.Read())
+            {
+                OleDbCommand trening = new OleDbCommand("select FitnessProgram,GroupName from FitnessProgram where FitnessID=" + dr.GetInt32(6) + ";", conn);
+                OleDbDataReader dr2 = trening.ExecuteReader();
+                dr2.Read();
+
+
+                String imeTreninga = dr2.GetString(0) + ", Group: " + dr2.GetString(1);
+                DataGrid.Rows.Add(dr.GetString(1), dr.GetDateTime(2), dr.GetInt32(3), NoToYN(dr.GetInt32(4)), dr.GetInt32(5), imeTreninga, dr.GetString(7));
+                DataGrid.Rows[DataGrid.RowCount - 1].Tag = dr.GetInt32(0);
+                if (dr.GetDateTime(2) < DateTime.Today)
+                    DataGrid.Rows[DataGrid.RowCount - 1].DefaultCellStyle.BackColor = Color.Red;
+                dr2.Close();
+            }
+            dr.Close();
+        }
 
 
     }

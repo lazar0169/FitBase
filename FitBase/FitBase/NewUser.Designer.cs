@@ -38,7 +38,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.startDate = new System.Windows.Forms.DateTimePicker();
+            this.EndDate = new System.Windows.Forms.DateTimePicker();
             this.comboPaid = new System.Windows.Forms.ComboBox();
             this.comboTrainer = new System.Windows.Forms.ComboBox();
             this.comboFitness = new System.Windows.Forms.ComboBox();
@@ -136,13 +136,13 @@
             this.label7.TabIndex = 13;
             this.label7.Text = "Trainer:";
             // 
-            // startDate
+            // EndDate
             // 
-            this.startDate.CalendarMonthBackground = System.Drawing.Color.Silver;
-            this.startDate.Location = new System.Drawing.Point(99, 33);
-            this.startDate.Name = "startDate";
-            this.startDate.Size = new System.Drawing.Size(200, 20);
-            this.startDate.TabIndex = 2;
+            this.EndDate.CalendarMonthBackground = System.Drawing.Color.Silver;
+            this.EndDate.Location = new System.Drawing.Point(99, 33);
+            this.EndDate.Name = "EndDate";
+            this.EndDate.Size = new System.Drawing.Size(200, 20);
+            this.EndDate.TabIndex = 2;
             // 
             // comboPaid
             // 
@@ -224,7 +224,7 @@
             this.Controls.Add(this.comboFitness);
             this.Controls.Add(this.comboTrainer);
             this.Controls.Add(this.comboPaid);
-            this.Controls.Add(this.startDate);
+            this.Controls.Add(this.EndDate);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtDues);
@@ -255,7 +255,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.DateTimePicker startDate;
+        private System.Windows.Forms.DateTimePicker EndDate;
         private System.Windows.Forms.ComboBox comboPaid;
         private System.Windows.Forms.ComboBox comboTrainer;
         private System.Windows.Forms.ComboBox comboFitness;

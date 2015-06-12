@@ -68,6 +68,7 @@ namespace FitBase
             {
                 MessageBox.Show("Error");
             }
+            form1.reload();
         }
 
         private void button2_Click(object sender, EventArgs e)

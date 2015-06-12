@@ -64,7 +64,7 @@ namespace FitBase
                 String imeGrupe = dr2.GetString(2);
 
                 txtName.Text = dr.GetString(1);
-                startDate.Value = Convert.ToDateTime(dr.GetDateTime(2));
+                EndDate.Value = Convert.ToDateTime(dr.GetDateTime(2));
                 txtDues.Text = dr.GetInt32(3).ToString();
                 comboPaid.SelectedIndex = dr.GetInt32(4);
                 txtDept.Text = dr.GetInt32(5).ToString();
@@ -92,18 +92,20 @@ namespace FitBase
                 if(!isEdit)
                 {
                     OleDbCommand fitnessID = new OleDbCommand("select fitnessID from FitnessProgram where FitnessProgram='" + comboFitness.Text + "';", conn);
-                    OleDbCommand add = new OleDbCommand("insert into Users (Name, StartDate, Dues,isPaid,Debt,FitnessID,TrainerName) values ('" + txtName.Text + "',@date," + Convert.ToInt32(txtDues.Text) + "," + comboPaid.SelectedIndex + "," + Convert.ToInt32(txtDept.Text) + "," + fitnessIDs[comboFitness.SelectedIndex] + ",'" + comboTrainer.Text + "');", conn);
-                    add.Parameters.AddWithValue("@date", startDate.Value.Date);
+                    OleDbCommand add = new OleDbCommand("insert into Users (Name, EndDate, Dues,isPaid,Debt,FitnessID,TrainerName) values ('" + txtName.Text + "',@date," + Convert.ToInt32(txtDues.Text) + "," + comboPaid.SelectedIndex + "," + Convert.ToInt32(txtDept.Text) + "," + fitnessIDs[comboFitness.SelectedIndex] + ",'" + comboTrainer.Text + "');", conn);
+                    add.Parameters.AddWithValue("@date", EndDate.Value.Date);
                     add.ExecuteNonQuery();
+                    OleDbConnection.ReleaseObjectPool();
                     MessageBox.Show("New User added !");
                     //form1.Refresh();
                     this.Close();
                 }
                 else
                 {
-                    OleDbCommand edit = new OleDbCommand("update Users set Name='" + txtName.Text + "', StartDate=@date, Dues=" + Convert.ToInt32(txtDues.Text) + ",isPaid=" + comboPaid.SelectedIndex + ",Debt=" + Convert.ToInt32(txtDept.Text) + ",FitnessID=" + fitnessIDs[comboFitness.SelectedIndex] + ",TrainerName='" + comboTrainer.Text + "' where userID="+userID+";", conn);
-                    edit.Parameters.AddWithValue("@date", startDate.Value.Date);
+                    OleDbCommand edit = new OleDbCommand("update Users set Name='" + txtName.Text + "', EndDate=@date, Dues=" + Convert.ToInt32(txtDues.Text) + ",isPaid=" + comboPaid.SelectedIndex + ",Debt=" + Convert.ToInt32(txtDept.Text) + ",FitnessID=" + fitnessIDs[comboFitness.SelectedIndex] + ",TrainerName='" + comboTrainer.Text + "' where userID="+userID+";", conn);
+                    edit.Parameters.AddWithValue("@date", EndDate.Value.Date);
                     edit.ExecuteNonQuery();
+                    OleDbConnection.ReleaseObjectPool();
                     MessageBox.Show("User saved");
                     this.Close();
                 }
@@ -113,6 +115,7 @@ namespace FitBase
             {
                 MessageBox.Show("Error");
             }
+            form1.reload();
             
 
         }
@@ -120,6 +123,7 @@ namespace FitBase
         private void comboTrainer_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboFitness.Items.Clear();
+            fitnessIDs.Clear();
             String trainerName = comboTrainer.Text;
             OleDbCommand read = new OleDbCommand("select FitnessProgram.FitnessID, FitnessProgram.FitnessProgram, FitnessProgram.GroupName from FitnessProgram,Trainer_Fitness where Trainer_Fitness.TrainerName='" + trainerName + "' and Trainer_Fitness.FitnessID=FitnessProgram.FitnessID;", conn);
             OleDbDataReader dr = read.ExecuteReader();

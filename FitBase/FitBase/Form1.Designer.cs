@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FitBaseForm));
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.FitnessCombo = new System.Windows.Forms.ComboBox();
@@ -37,7 +37,7 @@
             this.TrainerCombo = new System.Windows.Forms.ComboBox();
             this.DataGrid = new System.Windows.Forms.DataGridView();
             this.UserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StartDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Dues = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isPaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Debt = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,17 +52,17 @@
             this.userToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editTrainerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editFitnessProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addPaymentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteTrainerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteFitnessProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.databaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearAllRecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editFitnessProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteTrainerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteFitnessProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.DataGrid)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -96,6 +96,7 @@
             this.FitnessCombo.Name = "FitnessCombo";
             this.FitnessCombo.Size = new System.Drawing.Size(198, 23);
             this.FitnessCombo.TabIndex = 20;
+            this.FitnessCombo.SelectedIndexChanged += new System.EventHandler(this.FitnessCombo_SelectedIndexChanged);
             // 
             // Label2
             // 
@@ -143,18 +144,18 @@
             this.DataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DataGrid.BackgroundColor = System.Drawing.Color.LightGray;
             this.DataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightGray;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightGray;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.DataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.UserName,
-            this.StartDate,
+            this.EndDate,
             this.Dues,
             this.isPaid,
             this.Debt,
@@ -178,11 +179,11 @@
             this.UserName.Name = "UserName";
             this.UserName.ReadOnly = true;
             // 
-            // StartDate
+            // EndDate
             // 
-            this.StartDate.HeaderText = "Start Date";
-            this.StartDate.Name = "StartDate";
-            this.StartDate.ReadOnly = true;
+            this.EndDate.HeaderText = "Expiration Date";
+            this.EndDate.Name = "EndDate";
+            this.EndDate.ReadOnly = true;
             // 
             // Dues
             // 
@@ -315,6 +316,14 @@
             this.editTrainerToolStripMenuItem.Text = "Edit Trainer";
             this.editTrainerToolStripMenuItem.Click += new System.EventHandler(this.editTrainerToolStripMenuItem_Click);
             // 
+            // editFitnessProgramToolStripMenuItem
+            // 
+            this.editFitnessProgramToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("editFitnessProgramToolStripMenuItem.Image")));
+            this.editFitnessProgramToolStripMenuItem.Name = "editFitnessProgramToolStripMenuItem";
+            this.editFitnessProgramToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.editFitnessProgramToolStripMenuItem.Text = "Edit Fitness Program";
+            this.editFitnessProgramToolStripMenuItem.Click += new System.EventHandler(this.editFitnessProgramToolStripMenuItem_Click);
+            // 
             // addPaymentToolStripMenuItem
             // 
             this.addPaymentToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addPaymentToolStripMenuItem.Image")));
@@ -329,6 +338,22 @@
             this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(195, 22);
             this.deleteToolStripMenuItem1.Text = "Delete User";
             this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
+            // 
+            // deleteTrainerToolStripMenuItem
+            // 
+            this.deleteTrainerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("deleteTrainerToolStripMenuItem.Image")));
+            this.deleteTrainerToolStripMenuItem.Name = "deleteTrainerToolStripMenuItem";
+            this.deleteTrainerToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.deleteTrainerToolStripMenuItem.Text = "Delete Trainer";
+            this.deleteTrainerToolStripMenuItem.Click += new System.EventHandler(this.deleteTrainerToolStripMenuItem_Click);
+            // 
+            // deleteFitnessProgramToolStripMenuItem
+            // 
+            this.deleteFitnessProgramToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("deleteFitnessProgramToolStripMenuItem.Image")));
+            this.deleteFitnessProgramToolStripMenuItem.Name = "deleteFitnessProgramToolStripMenuItem";
+            this.deleteFitnessProgramToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.deleteFitnessProgramToolStripMenuItem.Text = "Delete Fitness Program";
+            this.deleteFitnessProgramToolStripMenuItem.Click += new System.EventHandler(this.deleteFitnessProgramToolStripMenuItem_Click);
             // 
             // databaseToolStripMenuItem
             // 
@@ -368,7 +393,7 @@
             // 
             this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -376,32 +401,9 @@
             // 
             this.closeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("closeToolStripMenuItem.Image")));
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.closeToolStripMenuItem.Text = "Exit";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
-            // 
-            // editFitnessProgramToolStripMenuItem
-            // 
-            this.editFitnessProgramToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("editFitnessProgramToolStripMenuItem.Image")));
-            this.editFitnessProgramToolStripMenuItem.Name = "editFitnessProgramToolStripMenuItem";
-            this.editFitnessProgramToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.editFitnessProgramToolStripMenuItem.Text = "Edit Fitness Program";
-            this.editFitnessProgramToolStripMenuItem.Click += new System.EventHandler(this.editFitnessProgramToolStripMenuItem_Click);
-            // 
-            // deleteTrainerToolStripMenuItem
-            // 
-            this.deleteTrainerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("deleteTrainerToolStripMenuItem.Image")));
-            this.deleteTrainerToolStripMenuItem.Name = "deleteTrainerToolStripMenuItem";
-            this.deleteTrainerToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.deleteTrainerToolStripMenuItem.Text = "Delete Trainer";
-            this.deleteTrainerToolStripMenuItem.Click += new System.EventHandler(this.deleteTrainerToolStripMenuItem_Click);
-            // 
-            // deleteFitnessProgramToolStripMenuItem
-            // 
-            this.deleteFitnessProgramToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("deleteFitnessProgramToolStripMenuItem.Image")));
-            this.deleteFitnessProgramToolStripMenuItem.Name = "deleteFitnessProgramToolStripMenuItem";
-            this.deleteFitnessProgramToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.deleteFitnessProgramToolStripMenuItem.Text = "Delete Fitness Program";
             // 
             // FitBaseForm
             // 
@@ -457,17 +459,17 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editTrainerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editFitnessProgramToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteTrainerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteFitnessProgramToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn UserName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StartDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EndDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn Dues;
         private System.Windows.Forms.DataGridViewTextBoxColumn isPaid;
         private System.Windows.Forms.DataGridViewTextBoxColumn Debt;
         private System.Windows.Forms.DataGridViewTextBoxColumn FitnessID;
         private System.Windows.Forms.DataGridViewTextBoxColumn TrainerName;
-        private System.Windows.Forms.ToolStripMenuItem editTrainerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editFitnessProgramToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteTrainerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteFitnessProgramToolStripMenuItem;
     }
 }
 
